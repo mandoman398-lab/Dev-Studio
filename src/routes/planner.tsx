@@ -183,18 +183,144 @@ export default function PlannerPage() {
   const backlogTasks = tasks.filter((t) => !t.date || t.date === "");
 
   return (
-    <div className="flex flex-col flex-1 overflow-hidden p-2 sm:p-3 gap-0">
+    <div className="flex flex-col flex-1 overflow-hidden p-2 sm:p-3 gap-2 sm:gap-3">
+
+      {/* ── TOP: Full-width header card ──────────────────── */}
+      <div className="shrink-0 rounded-2xl border border-border/60 bg-card px-4 sm:px-5 py-3.5">
+        <div className="flex items-center gap-3">
+          {/* Sidebar toggle */}
+          <button
+            onClick={toggleSidebar}
+            className="size-8 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors shrink-0 border border-border/40"
+            title={sidebarOpen ? "Hide calendar" : "Show calendar"}
+          >
+            {sidebarOpen ? <ChevronLeft className="size-4" /> : <ChevronRight className="size-4" />}
+          </button>
+
+          {/* Icon + title */}
+          <div className="flex items-center gap-2.5 flex-1 min-w-0">
+            <div className="size-8 rounded-xl bg-primary/10 border border-primary/15 flex items-center justify-center shrink-0">
+              <CalendarDays className="size-4 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h1 className="text-base sm:text-lg font-bold tracking-tight leading-tight">Planner</h1>
+              <p className="text-xs text-muted-foreground hidden sm:block truncate">
+                Schedule your day and get AI-powered suggestions
+              </p>
+            </div>
+          </div>
+
+          {/* Tab nav */}
+          <nav className="hidden sm:flex items-center gap-1 p-1 bg-muted/40 rounded-xl border border-border/50">
+            {TABS.map((t) => {
+              const Icon = t.icon;
+              const active = tab === t.id;
+              const badge = t.id === "backlog" ? backlogTasks.length : undefined;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  className={cn(
+                    "flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap",
+                    active
+                      ? "bg-background text-foreground shadow-sm border border-border/50"
+                      : "text-muted-foreground hover:text-foreground hover:bg-background/50"
+                  )}
+                >
+                  <Icon className={cn("size-3.5 shrink-0", active && "text-primary")} />
+                  {t.label}
+                  {badge != null && badge > 0 && (
+                    <span className={cn(
+                      "min-w-[16px] text-center text-[10px] leading-none px-1 py-0.5 rounded-full",
+                      active ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"
+                    )}>
+                      {badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Filter pills — schedule tab only */}
+          {tab === "schedule" && (
+            <div className="hidden md:flex items-center gap-1 p-1 bg-muted/30 rounded-xl border border-border/40">
+              <ListFilter className="size-3 text-muted-foreground ml-1 mr-0.5 shrink-0" />
+              {FILTERS.map((f) => {
+                const count =
+                  f.id === "all" ? dayTasks.length :
+                  f.id === "in-progress" ? inProgressTasks.length :
+                  f.id === "todo" ? todoTasks.length : doneTasks.length;
+                return (
+                  <button
+                    key={f.id}
+                    onClick={() => setFilterStatus(f.id)}
+                    className={cn(
+                      "flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium transition-all whitespace-nowrap",
+                      filterStatus === f.id
+                        ? "bg-background text-foreground shadow-sm border border-border/50"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {f.label}
+                    {count > 0 && <span className="text-[9px] font-bold opacity-50">{count}</span>}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {/* New Task button */}
+          <button
+            onClick={() => { setTab("schedule"); setShowAddForm(true); }}
+            className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground text-xs font-semibold px-3 py-2 rounded-xl hover:opacity-90 active:scale-[0.97] transition-all shadow-sm shrink-0"
+          >
+            <Plus className="size-3.5" />
+            <span className="hidden sm:inline">New Task</span>
+            <span className="sm:hidden">Add</span>
+          </button>
+        </div>
+
+        {/* Mobile tabs row */}
+        <div className="sm:hidden mt-3 flex items-center gap-2">
+          <nav className="flex items-center gap-1 p-1 bg-muted/40 rounded-xl border border-border/50 flex-1">
+            {TABS.map((t) => {
+              const Icon = t.icon;
+              const active = tab === t.id;
+              const badge = t.id === "backlog" ? backlogTasks.length : undefined;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  className={cn(
+                    "flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-medium transition-all",
+                    active
+                      ? "bg-background text-foreground shadow-sm border border-border/50"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <Icon className={cn("size-3.5 shrink-0", active && "text-primary")} />
+                  {t.label}
+                  {badge != null && badge > 0 && (
+                    <span className="text-[9px] font-bold text-primary">{badge}</span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+      </div>
+
+      {/* ── BOTTOM: Sidebar + Content split ─────────────── */}
       <div className="flex flex-1 min-h-0 gap-2 sm:gap-3">
 
-        {/* ── Sidebar panel ───────────────────────────────── */}
+        {/* Sidebar panel */}
         <aside
           className={cn(
-            "rounded-2xl border border-border/60 bg-muted/20 flex flex-col shrink-0 overflow-hidden transition-all duration-300 ease-in-out relative",
-            sidebarOpen ? "opacity-100" : "w-0 opacity-0 border-transparent"
+            "rounded-2xl border border-border/60 bg-muted/20 flex flex-col shrink-0 overflow-hidden transition-all duration-300 ease-in-out",
+            sidebarOpen ? "opacity-100" : "w-0 opacity-0 border-transparent pointer-events-none"
           )}
-          style={{
-            width: sidebarOpen ? "min(256px, 68vw)" : "0",
-          }}
+          style={{ width: sidebarOpen ? "min(256px, 68vw)" : "0" }}
         >
           <div className="w-64 flex flex-col h-full overflow-hidden">
             <PlannerSidebar
@@ -210,270 +336,185 @@ export default function PlannerPage() {
           </div>
         </aside>
 
-        {/* ── Main content panel ──────────────────────────── */}
+        {/* Main content panel */}
         <div className="flex-1 flex flex-col min-w-0 rounded-2xl border border-border/60 bg-card overflow-hidden">
 
-          {/* Panel header */}
-          <div className="shrink-0 px-4 sm:px-5 pt-4 pb-3 border-b border-border/60 space-y-3">
-
-            {/* Top row: sidebar toggle + title + actions */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={toggleSidebar}
-                className="size-8 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors shrink-0 border border-border/40"
-                title={sidebarOpen ? "Hide calendar" : "Show calendar"}
-              >
-                {sidebarOpen ? <ChevronLeft className="size-4" /> : <ChevronRight className="size-4" />}
-              </button>
-
-              <div className="flex items-center gap-2.5 flex-1 min-w-0">
-                <div className="size-8 rounded-xl bg-primary/10 border border-primary/15 flex items-center justify-center shrink-0">
-                  <CalendarDays className="size-4 text-primary" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h1 className="text-base sm:text-lg font-bold tracking-tight leading-tight">Planner</h1>
-                  <p className="text-xs text-muted-foreground hidden sm:block truncate">
-                    Schedule your day and get AI-powered suggestions
-                  </p>
-                </div>
-              </div>
-
-              <button
-                onClick={() => { setTab("schedule"); setShowAddForm(true); }}
-                className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground text-xs font-semibold px-3 py-2 rounded-xl hover:opacity-90 active:scale-[0.97] transition-all shadow-sm shrink-0"
-              >
-                <Plus className="size-3.5" />
-                <span className="hidden sm:inline">New Task</span>
-                <span className="sm:hidden">Add</span>
-              </button>
-            </div>
-
-            {/* Tab nav + filter row */}
-            <div className="flex items-center gap-2 flex-wrap">
-              {/* Tabs */}
-              <nav className="flex items-center gap-1 p-1 bg-muted/40 rounded-xl border border-border/50">
-                {TABS.map((t) => {
-                  const Icon = t.icon;
-                  const active = tab === t.id;
-                  const badge = t.id === "backlog" ? backlogTasks.length : undefined;
-                  return (
-                    <button
-                      key={t.id}
-                      onClick={() => setTab(t.id)}
-                      className={cn(
-                        "flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap",
-                        active
-                          ? "bg-background text-foreground shadow-sm border border-border/50"
-                          : "text-muted-foreground hover:text-foreground hover:bg-background/50"
-                      )}
-                    >
-                      <Icon className={cn("size-3.5 shrink-0", active ? "text-primary" : "")} />
-                      {t.label}
-                      {badge != null && badge > 0 && (
-                        <span className={cn(
-                          "min-w-[16px] text-center text-[10px] leading-none px-1 py-0.5 rounded-full",
-                          active ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground"
-                        )}>
-                          {badge}
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </nav>
-
-              {/* Filter pills — only for schedule tab */}
-              {tab === "schedule" && (
-                <div className="flex items-center gap-1 p-1 bg-muted/30 rounded-xl border border-border/40 ml-auto">
-                  <ListFilter className="size-3 text-muted-foreground ml-1 mr-0.5 shrink-0" />
-                  {FILTERS.map((f) => {
-                    const count =
-                      f.id === "all" ? dayTasks.length :
-                      f.id === "in-progress" ? inProgressTasks.length :
-                      f.id === "todo" ? todoTasks.length : doneTasks.length;
-                    return (
-                      <button
-                        key={f.id}
-                        onClick={() => setFilterStatus(f.id)}
-                        className={cn(
-                          "flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-medium transition-all whitespace-nowrap",
-                          filterStatus === f.id
-                            ? "bg-background text-foreground shadow-sm border border-border/50"
-                            : "text-muted-foreground hover:text-foreground"
-                        )}
-                      >
-                        {f.label}
-                        {count > 0 && (
-                          <span className="text-[9px] font-bold opacity-60">{count}</span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* ── Tab content ─────────────────────────────────── */}
-          <div className="flex-1 overflow-hidden flex flex-col min-h-0">
-
-            {/* SCHEDULE TAB */}
-            {tab === "schedule" && (
-              <div className="flex flex-col h-full overflow-hidden">
-                {/* Day header */}
-                <div className="shrink-0 px-4 sm:px-5 pt-3.5 pb-3 border-b border-border/50">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <h2 className="text-sm font-bold tracking-tight text-foreground">
-                        {formatDayTitle(selectedDate)}
-                      </h2>
-                      <div className="flex items-center gap-3 mt-1.5 flex-wrap">
-                        {totalCount > 0 ? (
-                          <>
-                            <span className="flex items-center gap-1 text-[11px] text-emerald-600 font-medium">
-                              <CheckCircle2 className="size-3.5" />
-                              {doneCount} done
+          {/* SCHEDULE TAB */}
+          {tab === "schedule" && (
+            <div className="flex flex-col h-full overflow-hidden">
+              {/* Day header */}
+              <div className="shrink-0 px-4 sm:px-5 pt-3.5 pb-3 border-b border-border/50">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <h2 className="text-sm font-bold tracking-tight">
+                      {formatDayTitle(selectedDate)}
+                    </h2>
+                    <div className="flex items-center gap-3 mt-1.5 flex-wrap">
+                      {totalCount > 0 ? (
+                        <>
+                          <span className="flex items-center gap-1 text-[11px] text-emerald-600 font-medium">
+                            <CheckCircle2 className="size-3.5" />{doneCount} done
+                          </span>
+                          {inProgressTasks.length > 0 && (
+                            <span className="flex items-center gap-1 text-[11px] text-primary font-medium">
+                              <Clock className="size-3.5" />{inProgressTasks.length} active
                             </span>
-                            {inProgressTasks.length > 0 && (
-                              <span className="flex items-center gap-1 text-[11px] text-primary font-medium">
-                                <Clock className="size-3.5" />
-                                {inProgressTasks.length} active
-                              </span>
-                            )}
-                            {todoTasks.length > 0 && (
-                              <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                                <Circle className="size-3.5" />
-                                {todoTasks.length} todo
-                              </span>
-                            )}
-                          </>
-                        ) : (
-                          <span className="text-xs text-muted-foreground">No tasks scheduled</span>
-                        )}
-                      </div>
+                          )}
+                          {todoTasks.length > 0 && (
+                            <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                              <Circle className="size-3.5" />{todoTasks.length} todo
+                            </span>
+                          )}
+                        </>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">No tasks scheduled</span>
+                      )}
                     </div>
 
-                    {/* Completion ring */}
-                    {totalCount > 0 && (
-                      <div className="shrink-0 relative size-11">
-                        <svg className="size-11 -rotate-90" viewBox="0 0 36 36">
-                          <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" strokeWidth="3.5" className="text-muted/60" />
-                          <circle
-                            cx="18" cy="18" r="14" fill="none" stroke="currentColor" strokeWidth="3.5"
-                            strokeDasharray={`${completionPct * 0.879} 87.9`}
-                            strokeLinecap="round"
-                            className="text-primary transition-all duration-500"
-                          />
-                        </svg>
-                        <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-primary">
-                          {completionPct}%
-                        </span>
-                      </div>
-                    )}
+                    {/* Mobile filter pills */}
+                    <div className="md:hidden flex items-center gap-1 mt-2 p-0.5 bg-muted/30 rounded-xl border border-border/40 w-fit">
+                      <ListFilter className="size-3 text-muted-foreground ml-1 mr-0.5 shrink-0" />
+                      {FILTERS.map((f) => {
+                        const count =
+                          f.id === "all" ? dayTasks.length :
+                          f.id === "in-progress" ? inProgressTasks.length :
+                          f.id === "todo" ? todoTasks.length : doneTasks.length;
+                        return (
+                          <button
+                            key={f.id}
+                            onClick={() => setFilterStatus(f.id)}
+                            className={cn(
+                              "flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium transition-all",
+                              filterStatus === f.id
+                                ? "bg-background text-foreground shadow-sm border border-border/50"
+                                : "text-muted-foreground hover:text-foreground"
+                            )}
+                          >
+                            {f.label}
+                            {count > 0 && <span className="text-[9px] opacity-50">{count}</span>}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
 
+                  {/* Completion ring */}
                   {totalCount > 0 && (
-                    <div className="mt-2.5 h-1 rounded-full bg-muted overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-primary transition-all duration-500"
-                        style={{ width: `${completionPct}%` }}
-                      />
+                    <div className="shrink-0 relative size-11">
+                      <svg className="size-11 -rotate-90" viewBox="0 0 36 36">
+                        <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" strokeWidth="3.5" className="text-muted/60" />
+                        <circle
+                          cx="18" cy="18" r="14" fill="none" stroke="currentColor" strokeWidth="3.5"
+                          strokeDasharray={`${completionPct * 0.879} 87.9`}
+                          strokeLinecap="round"
+                          className="text-primary transition-all duration-500"
+                        />
+                      </svg>
+                      <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-primary">
+                        {completionPct}%
+                      </span>
                     </div>
                   )}
                 </div>
 
-                {/* Task list */}
-                <div className="flex-1 overflow-y-auto scrollbar-thin px-4 sm:px-5 py-3 space-y-2">
-                  {loading ? (
-                    <div className="py-12 text-center space-y-2">
-                      <div className="size-8 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto" />
-                      <p className="text-xs text-muted-foreground">Loading tasks…</p>
-                    </div>
-                  ) : filteredTasks.length === 0 && allSortedTasks.length === 0 ? (
-                    <div className="py-14 text-center space-y-2">
-                      <CalendarDays className="size-10 text-muted-foreground/20 mx-auto" />
-                      <p className="text-sm font-semibold text-muted-foreground">Nothing planned for this day</p>
-                      <p className="text-xs text-muted-foreground/50">Add a task or ask the AI assistant for suggestions</p>
-                    </div>
-                  ) : filteredTasks.length === 0 ? (
-                    <div className="py-10 text-center">
-                      <p className="text-sm text-muted-foreground">No {filterStatus} tasks today</p>
-                    </div>
-                  ) : (
-                    filteredTasks.map((task) => (
-                      <TaskCard
-                        key={task.id}
-                        task={task}
-                        onToggle={handleToggle}
-                        onDelete={handleDelete}
-                        onEdit={setEditingTask}
-                      />
-                    ))
-                  )}
-
-                  {/* Add task form */}
-                  <div className="pt-1">
-                    <AddTaskForm
-                      key={showAddForm ? "open" : "closed"}
-                      date={selectedDate}
-                      onAdd={(t) => { handleAddTask(t); setShowAddForm(false); }}
-                      onCancel={() => setShowAddForm(false)}
-                      initialOpen={showAddForm}
+                {totalCount > 0 && (
+                  <div className="mt-2.5 h-1 rounded-full bg-muted overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-primary transition-all duration-500"
+                      style={{ width: `${completionPct}%` }}
                     />
-                  </div>
-
-                  {/* AI suggestions */}
-                  {!loading && (
-                    <div className="pt-2 pb-2">
-                      <AISuggestionsPanel date={selectedDate} tasks={dayTasks} />
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* OVERVIEW TAB */}
-            {tab === "overview" && (
-              <OverviewPanel tasks={tasks} weekStart={weekStart} />
-            )}
-
-            {/* BACKLOG TAB */}
-            {tab === "backlog" && (
-              <div className="flex-1 overflow-y-auto scrollbar-thin px-4 sm:px-5 py-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-sm font-bold">Backlog</h3>
-                    <p className="text-xs text-muted-foreground mt-0.5">Tasks not yet assigned to a day</p>
-                  </div>
-                  <AddTaskForm
-                    key="backlog-add"
-                    date=""
-                    onAdd={handleAddTask}
-                  />
-                </div>
-
-                {backlogTasks.length === 0 ? (
-                  <div className="py-16 text-center space-y-2">
-                    <Archive className="size-10 text-muted-foreground/20 mx-auto" />
-                    <p className="text-sm font-semibold text-muted-foreground">Backlog is empty</p>
-                    <p className="text-xs text-muted-foreground/50">Tasks without a date will appear here</p>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {backlogTasks.map((task) => (
-                      <TaskCard
-                        key={task.id}
-                        task={task}
-                        onToggle={handleToggle}
-                        onDelete={handleDelete}
-                        onEdit={setEditingTask}
-                      />
-                    ))}
                   </div>
                 )}
               </div>
-            )}
-          </div>
+
+              {/* Task list */}
+              <div className="flex-1 overflow-y-auto scrollbar-thin px-4 sm:px-5 py-3 space-y-2">
+                {loading ? (
+                  <div className="py-12 text-center space-y-2">
+                    <div className="size-8 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto" />
+                    <p className="text-xs text-muted-foreground">Loading tasks…</p>
+                  </div>
+                ) : filteredTasks.length === 0 && allSortedTasks.length === 0 ? (
+                  <div className="py-14 text-center space-y-2">
+                    <CalendarDays className="size-10 text-muted-foreground/20 mx-auto" />
+                    <p className="text-sm font-semibold text-muted-foreground">Nothing planned for this day</p>
+                    <p className="text-xs text-muted-foreground/50">Add a task or ask the AI assistant</p>
+                  </div>
+                ) : filteredTasks.length === 0 ? (
+                  <div className="py-10 text-center">
+                    <p className="text-sm text-muted-foreground">No {filterStatus} tasks today</p>
+                  </div>
+                ) : (
+                  filteredTasks.map((task) => (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      onToggle={handleToggle}
+                      onDelete={handleDelete}
+                      onEdit={setEditingTask}
+                    />
+                  ))
+                )}
+
+                <div className="pt-1">
+                  <AddTaskForm
+                    key={showAddForm ? "open" : "closed"}
+                    date={selectedDate}
+                    onAdd={(t) => { handleAddTask(t); setShowAddForm(false); }}
+                    onCancel={() => setShowAddForm(false)}
+                    initialOpen={showAddForm}
+                  />
+                </div>
+
+                {!loading && (
+                  <div className="pt-2 pb-2">
+                    <AISuggestionsPanel date={selectedDate} tasks={dayTasks} />
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* OVERVIEW TAB */}
+          {tab === "overview" && (
+            <OverviewPanel tasks={tasks} weekStart={weekStart} />
+          )}
+
+          {/* BACKLOG TAB */}
+          {tab === "backlog" && (
+            <div className="flex-1 overflow-y-auto scrollbar-thin px-4 sm:px-5 py-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold">Backlog</h3>
+                  <p className="text-xs text-muted-foreground mt-0.5">Tasks not yet assigned to a day</p>
+                </div>
+              </div>
+
+              <AddTaskForm
+                key="backlog-add"
+                date=""
+                onAdd={handleAddTask}
+              />
+
+              {backlogTasks.length === 0 ? (
+                <div className="py-16 text-center space-y-2">
+                  <Archive className="size-10 text-muted-foreground/20 mx-auto" />
+                  <p className="text-sm font-semibold text-muted-foreground">Backlog is empty</p>
+                  <p className="text-xs text-muted-foreground/50">Tasks without a date will appear here</p>
+                </div>
+              ) : (
+                backlogTasks.map((task) => (
+                  <TaskCard
+                    key={task.id}
+                    task={task}
+                    onToggle={handleToggle}
+                    onDelete={handleDelete}
+                    onEdit={setEditingTask}
+                  />
+                ))
+              )}
+            </div>
+          )}
         </div>
       </div>
 

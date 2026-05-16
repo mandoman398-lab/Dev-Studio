@@ -1,4 +1,18 @@
+import { useEffect, useState } from "react";
+
 export function SocialAuth({ loading }: { loading?: boolean }) {
+  const [googleEnabled, setGoogleEnabled] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    fetch("/api/auth/config")
+      .then((r) => r.json())
+      .then((d) => setGoogleEnabled(!!d.googleEnabled))
+      .catch(() => setGoogleEnabled(false));
+  }, []);
+
+  if (googleEnabled === null) return null;
+  if (!googleEnabled) return null;
+
   const handleGoogle = () => {
     window.location.href = "/api/auth/google";
   };

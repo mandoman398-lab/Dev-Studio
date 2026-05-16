@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Eye, EyeOff } from "lucide-react";
 import { SocialAuth } from "./social-auth";
@@ -14,8 +14,16 @@ export function AuthForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [googleEnabled, setGoogleEnabled] = useState(false);
   const navigate = useNavigate();
   const { refresh } = useAuth();
+
+  useEffect(() => {
+    fetch("/api/auth/config")
+      .then((r) => r.json())
+      .then((d) => setGoogleEnabled(!!d.googleEnabled))
+      .catch(() => setGoogleEnabled(false));
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -128,14 +136,17 @@ export function AuthForm() {
         </button>
       </form>
 
-      {/* Divider */}
-      <div className="flex items-center gap-3">
-        <div className="flex-1 h-px bg-border" />
-        <span className="text-xs text-muted-foreground">or</span>
-        <div className="flex-1 h-px bg-border" />
-      </div>
-
-      <SocialAuth loading={loading} />
+      {/* Divider + Google — only shown when Google is enabled */}
+      {googleEnabled && (
+        <>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-px bg-border" />
+            <span className="text-xs text-muted-foreground">or</span>
+            <div className="flex-1 h-px bg-border" />
+          </div>
+          <SocialAuth loading={loading} />
+        </>
+      )}
     </div>
   );
 }

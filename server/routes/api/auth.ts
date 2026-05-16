@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import passport from "passport";
@@ -99,6 +99,12 @@ router.get("/user", (req: Request, res: Response) => {
   } catch {
     res.status(401).json({ error: "Invalid session" });
   }
+});
+
+router.get("/config", (_req: Request, res: Response) => {
+  res.json({
+    googleEnabled: !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
+  });
 });
 
 // --- Google OAuth ---

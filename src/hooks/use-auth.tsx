@@ -1,42 +1,33 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 
 export interface ReplitUser {
   id: string;
   name: string;
-  email?: string;
   profileImage?: string;
 }
 
 interface AuthContextValue {
-  user: ReplitUser | null;
+  user: ReplitUser;
   isReady: boolean;
   signOut: () => Promise<void>;
 }
 
+const DEFAULT_USER: ReplitUser = {
+  id: "local",
+  name: "Developer",
+};
+
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<ReplitUser | null>(null);
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    fetch("/api/auth/user")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        if (data) setUser(data);
-      })
-      .catch(() => {})
-      .finally(() => setIsReady(true));
-  }, []);
-
-  const signOut = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    setUser(null);
-    window.location.href = "/auth";
-  };
-
   return (
-    <AuthContext.Provider value={{ user, isReady, signOut }}>
+    <AuthContext.Provider
+      value={{
+        user: DEFAULT_USER,
+        isReady: true,
+        signOut: async () => {},
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

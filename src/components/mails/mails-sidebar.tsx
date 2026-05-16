@@ -167,7 +167,7 @@ export function MailsSidebar({
       <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
 
       {/* Bottom Action */}
-      <div className="p-2 pt-0 shrink-0">
+      <div className="px-2 shrink-0">
         <button
           onClick={onNewTemplate}
           className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-primary/10 text-primary hover:bg-primary/15 text-xs font-semibold transition-colors border border-primary/20"

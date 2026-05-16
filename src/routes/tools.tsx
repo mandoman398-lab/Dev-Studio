@@ -58,7 +58,7 @@ function ToolsPage() {
         />
       </PageSection>
 
-      <div className="flex-1 min-h-0 flex flex-col">
+      <div className="flex-1 min-h-0 flex flex-col pt-1">
         {tab === "prompts" && <Prompts selectedId={id} />}
         {tab === "agents" && <Agents selectedId={id} />}
         {tab === "components" && <Components selectedId={id} />}

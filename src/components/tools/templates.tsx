@@ -67,13 +67,6 @@ export function Templates({ selectedId }: { selectedId?: string }) {
               Templates ({templates.length})
             </span>
           </div>
-          <button
-            onClick={create}
-            className="size-7 grid place-items-center rounded-xl hover:bg-muted/60 text-muted-foreground hover:text-foreground transition-colors"
-            title="New template"
-          >
-            <Plus className="size-3.5" />
-          </button>
         </div>
 
         <div className="relative">
@@ -123,11 +116,19 @@ export function Templates({ selectedId }: { selectedId?: string }) {
         )}
       </ul>
       <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
+      <div className="p-2 pt-0 shrink-0">
+        <button
+          onClick={create}
+          className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-primary/10 text-primary hover:bg-primary/15 text-xs font-semibold transition-colors border border-primary/20"
+        >
+          <Plus className="size-3.5" /> New Template
+        </button>
+      </div>
     </div>
   );
 
   return (
-    <SplitLayout sidebar={sidebar} sidebarWidth="lg:w-[300px]" className="border-t border-border">
+    <SplitLayout sidebar={sidebar} sidebarWidth="lg:w-[300px]">
       {selected ? (
         <section className="flex-1 overflow-y-auto scrollbar-thin">
           <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-8 py-6 sm:py-8 space-y-8">

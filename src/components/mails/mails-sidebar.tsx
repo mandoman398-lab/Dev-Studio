@@ -39,13 +39,6 @@ export function MailsSidebar({
             {channel.replace("-", " ")} ({channelTemplates.length})
           </span>
         </div>
-        <button
-          onClick={onNewTemplate}
-          className="size-7 grid place-items-center rounded-xl hover:bg-muted/60 text-muted-foreground hover:text-foreground transition-colors"
-          title="New template"
-        >
-          <Plus className="size-3.5" />
-        </button>
       </div>
 
       <nav className="overflow-y-auto p-2 space-y-0.5 scrollbar-thin flex-1">
@@ -90,6 +83,14 @@ export function MailsSidebar({
         )}
       </nav>
       <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
+      <div className="p-2 pt-0 shrink-0">
+        <button
+          onClick={onNewTemplate}
+          className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-primary/10 text-primary hover:bg-primary/15 text-xs font-semibold transition-colors border border-primary/20"
+        >
+          <Plus className="size-3.5" /> New Template
+        </button>
+      </div>
 
       <ConfirmDialog
         open={pendingDeleteId !== null}

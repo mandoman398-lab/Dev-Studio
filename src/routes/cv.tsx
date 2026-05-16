@@ -85,7 +85,7 @@ function CVPage() {
         />
       </PageSection>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden pt-1">
         <SplitLayout
           sidebar={
             <CVSidebar
@@ -97,7 +97,7 @@ function CVPage() {
             />
           }
           sidebarWidth="lg:w-[260px]"
-          className="border-t border-border"
+          className=""
         >
           <div className="h-full overflow-hidden">
             {draft ? (

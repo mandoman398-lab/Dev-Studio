@@ -82,7 +82,7 @@ function MailsPage() {
         />
       </PageSection>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden pt-1">
         <SplitLayout
           sidebar={
             <MailsSidebar
@@ -95,7 +95,7 @@ function MailsPage() {
             />
           }
           sidebarWidth="lg:w-[260px]"
-          className="border-t border-border"
+          className=""
         >
           <div className="overflow-y-auto scrollbar-thin h-full w-full">
             <TemplateEditor

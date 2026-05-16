@@ -41,7 +41,7 @@ function TechSkillsPage() {
         <SkillTabs />
       </PageSection>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden pt-1">
         <SkillArea data={TECH_AREAS[tab as TechAreaId]} />
       </div>
     </PageContainer>

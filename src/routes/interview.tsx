@@ -43,7 +43,7 @@ function InterviewPage() {
           activeTab={tab}
         />
       </PageSection>
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden pt-1">
         {tab === "questions" ? (
           <QuestionList />
         ) : (

@@ -125,7 +125,7 @@ export function SkillArea({
   );
 
   return (
-    <SplitLayout sidebar={sidebar} sidebarWidth="lg:w-[260px]" className="border-t border-border">
+    <SplitLayout sidebar={sidebar} sidebarWidth="lg:w-[260px]">
       <div className="overflow-y-auto scrollbar-thin h-full w-full">
         <div className="w-full max-w-[1400px] mx-auto p-4 sm:p-10">
           {activeSection === "overview" && (

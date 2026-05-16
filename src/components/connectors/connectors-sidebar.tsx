@@ -43,13 +43,6 @@ export function ConnectorsSidebar({
             {type} ({typeConnectors.length})
           </span>
         </div>
-        <button
-          onClick={onNewConnector}
-          className="size-7 grid place-items-center rounded-xl hover:bg-muted/60 text-muted-foreground hover:text-foreground transition-colors"
-          title="New contact"
-        >
-          <Plus className="size-3.5" />
-        </button>
       </div>
 
       <nav className="overflow-y-auto p-2 space-y-0.5 scrollbar-thin flex-1">
@@ -94,6 +87,14 @@ export function ConnectorsSidebar({
         )}
       </nav>
       <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
+      <div className="p-2 pt-0 shrink-0">
+        <button
+          onClick={onNewConnector}
+          className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-primary/10 text-primary hover:bg-primary/15 text-xs font-semibold transition-colors border border-primary/20"
+        >
+          <Plus className="size-3.5" /> New Contact
+        </button>
+      </div>
 
       <ConfirmDialog
         open={pendingDeleteId !== null}

@@ -20,17 +20,10 @@ export function OffersSidebar({ offers, activeId, onSelect, onAdd }: Props) {
   const { page, setPage, totalPages, paged, total, pageSize } = usePagination(offers, 20);
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      <div className="px-3 py-2.5 border-b border-border/60 flex items-center justify-between shrink-0">
+      <div className="px-3 py-2.5 border-b border-border/60 flex items-center shrink-0">
         <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/60">
           Offers ({offers.length})
         </span>
-        <button
-          onClick={onAdd}
-          className="size-7 grid place-items-center rounded-xl hover:bg-muted/60 text-muted-foreground hover:text-foreground transition-colors"
-          title="Add offer"
-        >
-          <Plus className="size-3.5" />
-        </button>
       </div>
       <div className="flex-1 overflow-y-auto p-2">
         {offers.length === 0 && (
@@ -74,6 +67,14 @@ export function OffersSidebar({ offers, activeId, onSelect, onAdd }: Props) {
         </ul>
       </div>
       <ListPagination page={page} totalPages={totalPages} total={total} pageSize={pageSize} onPageChange={setPage} />
+      <div className="p-2 pt-0 shrink-0">
+        <button
+          onClick={onAdd}
+          className="w-full flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-primary/10 text-primary hover:bg-primary/15 text-xs font-semibold transition-colors border border-primary/20"
+        >
+          <Plus className="size-3.5" /> Add Offer
+        </button>
+      </div>
     </div>
   );
 }

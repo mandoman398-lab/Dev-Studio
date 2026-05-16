@@ -47,7 +47,7 @@ function SoftSkillsPage() {
         />
       </PageSection>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden pt-1">
         <SoftSkillView activeTab={tab} />
       </div>
     </PageContainer>

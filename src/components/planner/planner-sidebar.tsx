@@ -23,7 +23,7 @@ function addDays(d: Date, n: number): Date {
   const r = new Date(d); r.setDate(r.getDate() + n); return r;
 }
 
-const DAY_NAMES  = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const DAY_NAMES  = ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"];
 const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export function PlannerSidebar({
@@ -54,7 +54,7 @@ export function PlannerSidebar({
       done:  dayTasks.filter((t) => t.status === "done").length,
       isToday: str === today,
       isSelected: str === selectedDate,
-      isWeekend: i >= 5,
+      isWeekend: i === 0 || i === 1, // Sat & Sun
     };
   });
 

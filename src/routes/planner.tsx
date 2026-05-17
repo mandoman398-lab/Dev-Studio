@@ -18,7 +18,6 @@ import { AddTaskForm } from "@/components/planner/add-task-form";
 import { EditTaskDialog } from "@/components/planner/edit-task-dialog";
 import { AISuggestionsPanel } from "@/components/planner/ai-suggestions-panel";
 import { OverviewPanel } from "@/components/planner/overview-panel";
-import { PrayerTimes } from "@/components/planner/prayer-times";
 import { getPlannerTasks, upsertPlannerTask, deletePlannerTask } from "@/lib/api/planner";
 import type { PlannerTask, TaskStatus, TaskCategory } from "@/types/planner";
 import {
@@ -39,8 +38,9 @@ type Tab = "schedule" | "overview" | "backlog";
 function toDateStr(d: Date) { return d.toISOString().slice(0, 10); }
 function getWeekStart(d: Date) {
   const r = new Date(d);
-  const day = r.getDay();
-  r.setDate(r.getDate() + (day === 0 ? -6 : 1 - day));
+  const day = r.getDay(); // 0=Sun … 6=Sat
+  const diff = (day - 6 + 7) % 7; // days since last Saturday
+  r.setDate(r.getDate() - diff);
   r.setHours(0, 0, 0, 0);
   return r;
 }
@@ -341,7 +341,6 @@ export default function PlannerPage() {
       onToday={handleToday}
       onAddTask={() => setTab("schedule")}
       weekTheme={weekTheme}
-      extraBottom={<PrayerTimes date={selectedDate} />}
     />
   );
 

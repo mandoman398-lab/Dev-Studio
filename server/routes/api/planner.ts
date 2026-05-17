@@ -109,7 +109,6 @@ Return ONLY a valid JSON object with this exact structure:
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
       ],
-      temperature: 0.6,
       response_format: { type: "json_object" },
     });
     const content = response.choices[0]?.message?.content ?? "{}";

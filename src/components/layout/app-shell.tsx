@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Sparkles, Bot, Component as ComponentIcon,
   LayoutTemplate, Code2, Plus, Flame, Code, Heart, GraduationCap,
   Menu, X, Search, Users, Briefcase, FileText, CalendarDays,
-  Sun, Moon, Bell, Languages, CheckCheck, Trash2, Info, CalendarCheck,
+  Sun, Moon, Bell, Languages, CheckCheck, Trash2, Info, CalendarCheck, Dumbbell,
 } from "lucide-react";
 import { CommandPalette } from "./command-palette";
 import { ErrorBoundary } from "./error-boundary";
@@ -60,9 +60,10 @@ function NotifIcon({ icon }: { icon: AppNotification["icon"] }) {
 
 /* ── Nav data ───────────────────────────────────────────── */
 const WORKSPACE_NAV = [
-  { to: "/",        label: "Dashboard", icon: LayoutDashboard },
-  { to: "/planner", label: "Planner",   icon: CalendarDays },
-  { to: "/tools",   label: "Tools",     icon: Code2 },
+  { to: "/",           label: "Dashboard",  icon: LayoutDashboard },
+  { to: "/planner",    label: "Planner",    icon: CalendarDays    },
+  { to: "/activities", label: "Activities", icon: Dumbbell        },
+  { to: "/tools",      label: "Tools",      icon: Code2           },
 ] as const;
 
 const COMMUNICATION_NAV = [

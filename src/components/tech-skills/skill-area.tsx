@@ -7,6 +7,7 @@ import {
   Search,
   Plus,
   ChevronRight,
+  LucideIcon,
 } from "lucide-react";
 import type { SkillAreaData } from "@/types/skills";
 import { OverviewSection } from "./overview-section";
@@ -18,6 +19,12 @@ import { TabNav } from "../layout";
 import { cn } from "@/lib/utils";
 
 type SectionId = "overview" | "checklist" | "interview" | "resources";
+
+interface SubAreaTab {
+  id: string;
+  label: string;
+  icon?: LucideIcon;
+}
 
 const SECTIONS: { id: SectionId; label: string; icon: React.ElementType }[] = [
   { id: "overview",  label: "Overview",       icon: BookOpen },
@@ -31,9 +38,11 @@ const ADD_SECTIONS: SectionId[] = ["interview"];
 export function SkillArea({
   data,
   activeSubArea,
+  subAreaTabs = [],
 }: {
   data: SkillAreaData;
   activeSubArea?: string;
+  subAreaTabs?: SubAreaTab[];
 }) {
   const [activeSection, setActiveSection] = useState<SectionId>("overview");
   const [subArea, setSubArea] = useState<string>(
@@ -63,6 +72,31 @@ export function SkillArea({
   };
 
   const addLabel = activeSection === "interview" ? "Add Q&A" : "Add";
+
+  // Build the combined tab list: regular sections + sub-area shortcut tabs
+  const subAreaTabIds = new Set(subAreaTabs.map((t) => t.id));
+  const allTabs = [
+    ...SECTIONS.map((s) => ({ id: s.id, label: s.label, icon: s.icon, isSubArea: false })),
+    ...subAreaTabs.map((t) => ({ id: t.id, label: t.label, icon: t.icon, isSubArea: true })),
+  ];
+
+  // Active tab: if the current subArea matches a sub-area tab, highlight it;
+  // otherwise highlight the active section.
+  const activeTabId = subAreaTabIds.has(subArea) ? subArea : activeSection;
+
+  const handleTabClick = (id: string, isSubArea: boolean) => {
+    if (isSubArea) {
+      setSubArea(id);
+      setActiveSection("overview");
+    } else {
+      setActiveSection(id as SectionId);
+      // When switching to a regular section, reset to the base sub-area
+      // (first sub-area of the data) if we were on a sub-area tab
+      if (subAreaTabIds.has(subArea)) {
+        setSubArea(activeSubArea || data.subAreas?.[0]?.id || "");
+      }
+    }
+  };
 
   /* ── Sidebar ─────────────────────────────────────────── */
   const sidebar = (
@@ -119,7 +153,12 @@ export function SkillArea({
                 return (
                   <button
                     key={sa.id}
-                    onClick={() => setSubArea(sa.id)}
+                    onClick={() => {
+                      setSubArea(sa.id);
+                      if (subAreaTabIds.has(sa.id)) {
+                        setActiveSection("overview");
+                      }
+                    }}
                     className={cn(
                       "w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all",
                       active
@@ -154,13 +193,13 @@ export function SkillArea({
         {/* Inner tab nav */}
         <div className="px-4 pt-4 pb-3 border-b border-border/60 shrink-0">
           <TabNav
-            tabs={SECTIONS.map((s) => ({
-              id: s.id,
-              label: s.label,
-              icon: s.icon,
-              onClick: () => setActiveSection(s.id),
+            tabs={allTabs.map((t) => ({
+              id: t.id,
+              label: t.label,
+              icon: t.icon,
+              onClick: () => handleTabClick(t.id, t.isSubArea),
             }))}
-            activeTab={activeSection}
+            activeTab={activeTabId}
           />
         </div>
 

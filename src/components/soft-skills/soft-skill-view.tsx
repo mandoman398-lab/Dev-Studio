@@ -21,10 +21,15 @@ export const SOFT_SKILL_GROUPS: Record<string, { id: string; label: string; icon
   ],
 };
 
+const SOFT_SKILLS_DATA_FILTERED = {
+  ...SOFT_SKILLS_DATA,
+  subAreas: SOFT_SKILLS_DATA.subAreas?.filter((sa) => sa.id !== "top-10"),
+};
+
 export function SoftSkillView({ activeTab }: { activeTab?: string }) {
   return (
     <SkillArea
-      data={SOFT_SKILLS_DATA}
+      data={SOFT_SKILLS_DATA_FILTERED}
       activeSubArea={activeTab}
       subAreaGroups={SOFT_SKILL_GROUPS}
     />

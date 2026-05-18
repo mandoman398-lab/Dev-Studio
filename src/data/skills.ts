@@ -49,6 +49,8 @@ import {
   AlertTriangle,
   DatabaseZap,
   MonitorDot,
+  Trophy,
+  Repeat2,
 } from "lucide-react";
 
 export const TECH_AREAS: Record<TechAreaId, SkillAreaData> = {
@@ -1933,6 +1935,233 @@ export const SOFT_SKILLS_DATA: SkillAreaData = {
           title: "The 20% Rule",
           body: "Protect 20% of your time for learning, experimentation, and technical exploration. If you're always in delivery mode, you'll stagnate. Learning is not optional — it's part of the job.",
         },
+      ],
+    },
+    {
+      id: "time",
+      label: "Time Management",
+      icon: Clock,
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
+      tags: ["time", "productivity", "leadership"],
+      concepts: [
+        {
+          title: "Time-Blocking",
+          body: "Assign every hour a job before the day starts. Deep work goes in your peak energy window (morning for most). Shallow tasks — email, Slack, meetings — fill the gaps. A blank calendar is not free time, it's stolen time.",
+        },
+        {
+          title: "Eisenhower Matrix",
+          body: "Split tasks into 4 quadrants: Urgent+Important (do now), Important+Not Urgent (schedule), Urgent+Not Important (delegate), Neither (eliminate). Most engineers live in quadrant 1 — the goal is to spend more time in quadrant 2.",
+        },
+        {
+          title: "Eat the Frog",
+          body: "Do your hardest, most important task first — before email, before Slack. Once the frog is eaten, every other task feels easy. Procrastination feeds on easy wins.",
+        },
+        {
+          title: "Pomodoro Technique",
+          body: "25 minutes of focused work, 5-minute break, repeat 4×, then take a longer 20-minute break. Forces single-tasking. The break is not optional — it's when your brain consolidates.",
+        },
+        {
+          title: "Single-Tasking",
+          body: "Multitasking is a myth. Context-switching costs ~23 minutes of recovery per interruption. Close unrelated tabs. Put your phone face down. Batch your communication windows.",
+        },
+        {
+          title: "Weekly Review",
+          body: "Every Friday: review what shipped, what didn't, and why. Reschedule incomplete high-priority tasks before Monday. 30 minutes of weekly planning saves 5 hours of reactive scrambling.",
+        },
+      ],
+      checklist: [
+        { id: "time-block-week", label: "Next week's deep work blocks scheduled" },
+        { id: "frog-identified", label: "Most important task identified for tomorrow" },
+        { id: "distractions-blocked", label: "Notifications off during focus sessions" },
+        { id: "weekly-review", label: "Weekly review completed every Friday" },
+      ],
+      resources: [
+        { label: "Deep Work — Cal Newport", url: "https://calnewport.com/deep-work/", desc: "The definitive case for focused, distraction-free work and how to cultivate it." },
+        { label: "Getting Things Done — David Allen", url: "https://gettingthingsdone.com/", desc: "Trusted productivity system for capturing and processing all your commitments." },
+        { label: "The Eisenhower Matrix", url: "https://todoist.com/productivity-methods/eisenhower-matrix", desc: "Visual guide to the 4-quadrant prioritisation framework." },
+      ],
+    },
+    {
+      id: "growth",
+      label: "Growth Mindset",
+      icon: Sparkles,
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
+      tags: ["growth", "mindset", "learning", "leadership"],
+      concepts: [
+        {
+          title: "Fixed vs Growth Mindset",
+          body: "Fixed mindset: talent is static, failure is identity. Growth mindset: ability is developed, failure is data. Carol Dweck's research shows growth mindset predicts achievement better than IQ in challenging domains.",
+        },
+        {
+          title: "Embrace Deliberate Discomfort",
+          body: "If a task feels easy, you're not growing. Deliberately seek projects slightly above your current level. The stretch zone — not the comfort zone — is where skill is built.",
+        },
+        {
+          title: "Reframe Failure as Feedback",
+          body: "'I failed' → 'that approach didn't work — here's why.' Keep a failure log: what happened, what I learned, what I'd do differently. Engineers who embrace this compound faster than those who avoid mistakes.",
+        },
+        {
+          title: "Seek Feedback Actively",
+          body: "Don't wait for performance reviews. Ask after every project: 'What's one thing I could have done better?' Specific, frequent feedback accelerates growth faster than annual reviews.",
+        },
+        {
+          title: "The Power of 'Not Yet'",
+          body: "Replace 'I can't do X' with 'I can't do X yet.' This tiny word signals to your brain that skill is learnable, not fixed. It maintains motivation through the difficult early phase of any skill.",
+        },
+      ],
+      resources: [
+        { label: "Mindset — Carol Dweck", url: "https://www.mindsetonline.com/", desc: "The original research on fixed vs growth mindset and how it shapes achievement." },
+        { label: "Grit — Angela Duckworth", url: "https://angeladuckworth.com/grit-book/", desc: "How passion + perseverance outperforms raw talent over long time horizons." },
+      ],
+    },
+    {
+      id: "mental-models",
+      label: "Mental Models",
+      icon: Brain,
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
+      tags: ["mental-models", "thinking", "decision-making"],
+      concepts: [
+        {
+          title: "Inversion",
+          body: "Instead of asking 'how do I succeed?', ask 'what guarantees failure?' Then avoid those. Charlie Munger: 'All I want to know is where I'm going to die, so I'll never go there.' Apply to systems: what must never happen in production?",
+        },
+        {
+          title: "First Principles Thinking",
+          body: "Break assumptions until you reach physical or logical truths, then build back up. Musk used this to cut rocket costs 10×. Engineers use it to question 'this is how it's always done' — which is usually the wrong reason.",
+        },
+        {
+          title: "Second-Order Thinking",
+          body: "Ask 'and then what?' after every decision. First-order: this optimization speeds up the API. Second-order: faster API increases traffic → database becomes the bottleneck. Think two steps ahead before committing.",
+        },
+        {
+          title: "Pareto Principle (80/20)",
+          body: "80% of results come from 20% of effort. Identify the 20% of features, fixes, or tasks that produce 80% of value. Cut the rest — or do it last. This is why MVPs beat perfect products in the market.",
+        },
+        {
+          title: "Occam's Razor",
+          body: "Among competing explanations, prefer the simplest one that fits the facts. In debugging: check environment variables before assuming cache corruption. In architecture: choose the boring technology before the clever one.",
+        },
+        {
+          title: "Maps Are Not the Territory",
+          body: "Your mental model of a system is not the system. Documentation is not the code. The spec is not the user. Constantly test your assumptions against reality — instruments over intuition.",
+        },
+      ],
+      resources: [
+        { label: "The Great Mental Models — Farnam Street", url: "https://fs.blog/tgmm/", desc: "A curated collection of the most useful mental models across disciplines." },
+        { label: "Poor Charlie's Almanack", url: "https://www.stripe.press/poor-charlies-almanack", desc: "Charlie Munger's worldly wisdom through mental models." },
+      ],
+    },
+    {
+      id: "agile",
+      label: "Agile / Scrum",
+      icon: Repeat2,
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
+      tags: ["agile", "scrum", "teamwork", "process"],
+      concepts: [
+        {
+          title: "Sprint Planning",
+          body: "Agree on the sprint goal before picking tickets. The goal is a commitment, not a to-do list. Each item should have a clear Definition of Done. Velocity is a planning tool — not a performance metric.",
+        },
+        {
+          title: "Daily Standup",
+          body: "What did I do yesterday? What am I doing today? What's blocking me? Keep it under 15 minutes — it's a sync, not a status report. If discussion is needed, take it offline with the relevant people.",
+        },
+        {
+          title: "Retrospectives",
+          body: "The most underrated ceremony. Keep / Try / Drop format or Start / Stop / Continue. Safety to speak honestly is more important than the format. The retro only has value if actions are tracked and followed through.",
+        },
+        {
+          title: "Definition of Done",
+          body: "A shared checklist that every piece of work must pass before 'done' is declared: code reviewed, tests passing, deployed to staging, documentation updated. Without DoD, 'done' means nothing.",
+        },
+        {
+          title: "Kanban vs Scrum",
+          body: "Scrum: time-boxed sprints, roles (PO, SM), planning ceremonies — good for product teams with regular delivery cadence. Kanban: continuous flow, WIP limits — good for ops, support, or maintenance teams. Know which your team actually runs.",
+        },
+        {
+          title: "The Agile Manifesto Values",
+          body: "Individuals & interactions over processes & tools. Working software over comprehensive documentation. Customer collaboration over contract negotiation. Responding to change over following a plan. Most teams cargo-cult the ceremonies and miss the values.",
+        },
+      ],
+      checklist: [
+        { id: "sprint-goal-clear", label: "Sprint goal defined before picking tickets" },
+        { id: "dod-written", label: "Definition of Done written and agreed by the team" },
+        { id: "retro-actions-tracked", label: "Retro action items tracked across sprints" },
+        { id: "standup-under-15", label: "Daily standup kept under 15 minutes" },
+      ],
+      resources: [
+        { label: "Agile Manifesto", url: "https://agilemanifesto.org/", desc: "The original 4 values and 12 principles — read before anything else." },
+        { label: "Scrum Guide", url: "https://scrumguides.org/", desc: "The official, free Scrum Guide by Schwaber & Sutherland." },
+        { label: "Shape Up — Basecamp", url: "https://basecamp.com/shapeup", desc: "An alternative to Scrum for async-first product teams." },
+      ],
+    },
+    {
+      id: "top-10",
+      label: "Top 10 Questions",
+      icon: Trophy,
+      color: "border-primary/40 bg-primary/10 text-primary",
+      accent: "border-primary/30",
+      tags: ["interview", "hr", "behavioral", "career"],
+      concepts: [
+        {
+          title: "Tell Me About Yourself",
+          body: "Use the Present → Past → Future formula. Present: your current role and what you deliver. Past: the experience that made you effective at it. Future: why this role is the next logical step. Keep it under 2 minutes. Never start with your university — start with your value.",
+        },
+        {
+          title: "What Is Your Greatest Strength?",
+          body: "Pick ONE specific strength. Back it with a concrete example (STAR: Situation, Task, Action, Result). Connect it directly to the role you're interviewing for. 'I'm a hard worker' is a red flag — 'I debug complex distributed systems quickly' is a strength.",
+        },
+        {
+          title: "What Is Your Greatest Weakness?",
+          body: "Avoid fake weaknesses ('I work too hard'). Pick a real one that you're actively improving. Framework: name the weakness → show self-awareness → show what you've done to address it → show evidence of improvement. Example: 'I used to underestimate how long tasks take. I now time-box every task and track actual vs estimated — my estimates are within 20% now.'",
+        },
+        {
+          title: "Why Do You Want to Work Here?",
+          body: "This question tests whether you researched the company. Answer requires: (1) something specific about their product/mission/culture that genuinely excites you, (2) how your skills connect to their current challenges, (3) what you want to learn or build there. 'Good salary' is never the answer — even if it's true.",
+        },
+        {
+          title: "Where Do You See Yourself in 5 Years?",
+          body: "They're not asking for a career plan — they're asking: will you leave in 6 months, and do you have ambition? Answer: show growth ambition within the domain (not 'your job'). 'I want to go deeper in distributed systems and eventually lead architecture decisions for high-scale products' is strong. 'I want to be a manager' is fine if it fits the role.",
+        },
+        {
+          title: "How Do You Manage Your Time and Priorities?",
+          body: "Walk them through your actual system — not a textbook answer. Mention: how you prioritise competing tasks (impact vs effort), how you handle interruptions, how you communicate when timelines shift. Use a real example: 'In my last role two deadlines collided — I did X to negotiate and Y to deliver.' Tools are fine to mention but the system matters more.",
+        },
+        {
+          title: "What Are Your Salary Expectations?",
+          body: "Do market research first (Glassdoor, Levels.fyi, LinkedIn Salary). Give a range anchored at the high end of reasonable: 'Based on my research and experience, I'm targeting X–Y, but I'm open to the full package.' Don't give a single number — it anchors too low. Don't say 'whatever is fair' — it signals no self-worth.",
+        },
+        {
+          title: "How Do You Handle Conflict or Pressure?",
+          body: "Use a real story. STAR method: the conflict (Situation), your role (Task), what you actually did (Action), and the outcome (Result). Show that you addressed the issue directly, not passively. Key signals: you kept the relationship intact, you focused on the problem not the person, you learned something. 'I avoid conflict' is a disqualifier.",
+        },
+        {
+          title: "Tell Me About a Challenge You Overcame",
+          body: "STAR method is non-negotiable here. Pick a challenge that was genuinely hard — not trivial. The Action phase is the longest: break down exactly what YOU did (not the team). The Result must be measurable or at least concrete. Common mistake: candidates spend 80% on the situation and 20% on the action — flip it.",
+        },
+        {
+          title: "Do You Have Any Questions for Us?",
+          body: "Always have 3 prepared. Never say 'no, I think you covered everything.' Good questions: 'What does success look like in the first 90 days?', 'What's the biggest technical challenge the team is facing?', 'How does the team handle disagreements on technical direction?', 'What do you wish you'd known before joining?' These signal preparation, curiosity, and that you're evaluating them too.",
+        },
+      ],
+      checklist: [
+        { id: "top10-researched-company", label: "Researched company: product, mission, recent news" },
+        { id: "top10-salary-range", label: "Salary range researched on Glassdoor / Levels.fyi" },
+        { id: "top10-star-stories", label: "3+ STAR stories prepared for behavioral questions" },
+        { id: "top10-strength-ready", label: "Greatest strength answer rehearsed with a concrete example" },
+        { id: "top10-weakness-ready", label: "Genuine weakness + improvement evidence prepared" },
+        { id: "top10-questions-ready", label: "3 thoughtful questions prepared to ask the interviewer" },
+        { id: "top10-intro-rehearsed", label: "'Tell me about yourself' timed under 2 minutes" },
+      ],
+      resources: [
+        { label: "Levels.fyi — Salary Data", url: "https://www.levels.fyi/", desc: "Crowd-sourced compensation data for tech roles by company and level." },
+        { label: "STAR Method Guide", url: "https://www.themuse.com/advice/star-interview-method", desc: "How to structure behavioral interview answers with Situation, Task, Action, Result." },
+        { label: "Glassdoor Interview Questions", url: "https://www.glassdoor.com/Interview/index.htm", desc: "Real interview questions reported by candidates at specific companies." },
+        { label: "interviewing.io", url: "https://interviewing.io/", desc: "Anonymous mock technical interviews with engineers from top companies." },
       ],
     },
   ],

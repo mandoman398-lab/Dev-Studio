@@ -9,6 +9,7 @@ import { z } from "zod";
 const searchSchema = z.object({
   tab: z
     .enum([
+      "top-10",
       "communication",
       "leadership",
       "problem-solving",
@@ -16,7 +17,7 @@ const searchSchema = z.object({
       "ai-mock",
     ])
     .optional()
-    .default("communication"),
+    .default("top-10"),
 });
 
 export const Route = createFileRoute("/soft-skills")({

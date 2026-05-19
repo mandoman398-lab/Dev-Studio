@@ -137,11 +137,18 @@ function ProfilePage() {
             </div>
             <button
               onClick={() => {
-                if (
-                  confirm("Are you sure? This will reload the app and clear your local progress.")
-                ) {
-                  hardReset();
-                }
+                toast.warning("Reset all app data?", {
+                  description: "This will clear local settings, progress, and cache. Cannot be undone.",
+                  duration: 10000,
+                  action: {
+                    label: "Yes, reset",
+                    onClick: () => hardReset(),
+                  },
+                  cancel: {
+                    label: "Cancel",
+                    onClick: () => {},
+                  },
+                });
               }}
               className="inline-flex items-center gap-2 bg-destructive text-destructive-foreground text-sm font-medium px-4 py-2 rounded-md hover:opacity-90 transition-opacity"
             >

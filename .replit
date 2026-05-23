@@ -11,6 +11,7 @@ channel = "stable-25_05"
 [userenv.shared]
 PORT = "3001"
 NODE_ENV = "development"
+JWT_SECRET = "bf75036c5e75badaa228db3a0a00bc3faa5c6c2b462aaff016b163f55885bfc13d6ef1de70e5f38f241741a0c68af891e6bba33205b9f4bd0ff55a27037c06de"
 
 [workflows]
 runButton = "Project"
